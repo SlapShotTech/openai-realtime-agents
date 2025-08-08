@@ -128,21 +128,32 @@ export function useRealtimeSession(callbacks: RealtimeSessionCallbacks = {}) {
       const codecParam = codecParamRef.current;
       const audioFormat = audioFormatForCodec(codecParam);
 
+      const realtimeModel =
+        process.env.NEXT_PUBLIC_REALTIME_MODEL ??
+        'gpt-4o-realtime-preview-2025-06-03';
+      const transcriptionModel =
+        process.env.NEXT_PUBLIC_TRANSCRIPTION_MODEL ??
+        'gpt-4o-mini-transcribe';
+      const baseUrl = process.env.NEXT_PUBLIC_OPENAI_BASE_URL
+        ? `${process.env.NEXT_PUBLIC_OPENAI_BASE_URL}/realtime`
+        : undefined;
+
       sessionRef.current = new RealtimeSession(rootAgent, {
         transport: new OpenAIRealtimeWebRTC({
           audioElement,
+          baseUrl,
           // Set preferred codec before offer creation
           changePeerConnection: async (pc: RTCPeerConnection) => {
             applyCodec(pc);
             return pc;
           },
         }),
-        model: 'gpt-4o-realtime-preview-2025-06-03',
+        model: realtimeModel,
         config: {
           inputAudioFormat: audioFormat,
           outputAudioFormat: audioFormat,
           inputAudioTranscription: {
-            model: 'gpt-4o-mini-transcribe',
+            model: transcriptionModel,
           },
         },
         outputGuardrails: outputGuardrails ?? [],

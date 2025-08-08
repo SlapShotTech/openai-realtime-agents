@@ -38,7 +38,7 @@ export async function runGuardrailClassifier(
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      model: 'gpt-4o-mini',
+      model: process.env.NEXT_PUBLIC_TEXT_MODEL ?? 'gpt-4o-mini',
       input: messages,
       text: {
         format: zodTextFormat(GuardrailOutputZod, 'output_format'),

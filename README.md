@@ -23,9 +23,19 @@ There are two main patterns demonstrated:
 
 - This is a Next.js typescript app. Install dependencies with `npm i`.
 - Add your `OPENAI_API_KEY` to your env. Either add it to your `.bash_profile` or equivalent, or copy `.env.sample` to `.env` and add it there.
+- To use OpenAI-compatible services (OpenRouter, Ollama, LM Studio, etc.) set `OPENAI_BASE_URL` and `NEXT_PUBLIC_OPENAI_BASE_URL` to the provider's base URL and, if required, add extra headers in `OPENAI_ADDITIONAL_HEADERS` (JSON format). You can also override models with `REALTIME_MODEL`, `NEXT_PUBLIC_REALTIME_MODEL`, `NEXT_PUBLIC_TRANSCRIPTION_MODEL`, and `NEXT_PUBLIC_TEXT_MODEL`.
 - Start the server with `npm run dev`
 - Open your browser to [http://localhost:3000](http://localhost:3000). It should default to the `chatSupervisor` Agent Config.
 - You can change examples via the "Scenario" dropdown in the top right.
+
+### Using OpenAI-Compatible APIs
+
+This project can connect to any service that implements the OpenAI API.
+To target providers like **OpenRouter**, **Ollama**, or **LM Studio**:
+
+- Set `OPENAI_BASE_URL` and `NEXT_PUBLIC_OPENAI_BASE_URL` to the provider's base URL (e.g. `https://openrouter.ai/api/v1`, `http://localhost:11434/v1`).
+- Provide any required custom headers via `OPENAI_ADDITIONAL_HEADERS` as a JSON object.
+- Override model names with `REALTIME_MODEL`, `NEXT_PUBLIC_REALTIME_MODEL`, `NEXT_PUBLIC_TRANSCRIPTION_MODEL`, and `NEXT_PUBLIC_TEXT_MODEL` as needed.
 
 # Agentic Pattern 1: Chat-Supervisor
 

@@ -5,7 +5,20 @@ import OpenAI from 'openai';
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
-  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  let extraHeaders: Record<string, string> | undefined;
+  if (process.env.OPENAI_ADDITIONAL_HEADERS) {
+    try {
+      extraHeaders = JSON.parse(process.env.OPENAI_ADDITIONAL_HEADERS);
+    } catch (e) {
+      console.warn('Failed to parse OPENAI_ADDITIONAL_HEADERS', e);
+    }
+  }
+
+  const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+    baseURL: process.env.OPENAI_BASE_URL,
+    defaultHeaders: extraHeaders,
+  });
 
   if (body.text?.format?.type === 'json_schema') {
     return await structuredResponse(openai, body);
